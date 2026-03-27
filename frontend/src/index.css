@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #000000;
+  --color-accent: #facc15;
+  --color-surface: rgba(255, 255, 255, 0.7);
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Fluid Typography */
+  --text-h1: clamp(2rem, 5vw, 4rem);
+  --text-h2: clamp(1.5rem, 4vw, 3rem);
+  --text-body: clamp(0.875rem, 1vw + 0.5rem, 1.125rem);
+}
+
+html {
+  overflow-x: hidden;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    @apply font-extrabold tracking-tight;
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    @apply font-semibold tracking-tight transition-colors;
+  }
+
+  /* Dark mode global overrides */
+  .dark body {
+    background-color: #0c0c0e !important;
+    color: #f4f4f5 !important;
+  }
+
+  /* Force dark mode on specific elements */
+  .dark .bg-white {
+    background-color: #0c0c0e !important;
+  }
+  
+  .dark .bg-gray-50, .dark .bg-gray-100 {
+    background-color: #121214 !important;
+  }
+
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark p, .dark span:not(.no-dark), .dark a:not(.no-dark), .dark label {
+    color: #f4f4f5 !important;
+  }
+  
+  .dark .text-gray-400, .dark .text-gray-500, .dark .text-gray-600 {
+    color: #a1a1aa !important;
+  }
+
+  .dark border-gray-100, .dark .border-gray-200 {
+    border-color: #27272a !important;
+  }
+}
+
+.dark {
+  --color-primary: #ffffff;
+  --color-surface: rgba(18, 18, 20, 0.9);
+  --color-accent: #facc15;
+  color-scheme: dark;
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm transition-colors;
+  }
+  .dark .glass {
+    @apply bg-zinc-900/70 border-zinc-800/50 shadow-black/20;
+  }
+
+  .premium-button {
+    @apply px-8 py-3 bg-black text-white font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] hover:bg-zinc-800 active:scale-95 shadow-lg;
+  }
+  .dark .premium-button {
+    @apply bg-white text-black hover:bg-zinc-200;
+  }
+
+  .premium-card {
+    @apply bg-white rounded-2xl border border-gray-100 transition-all duration-300 hover:border-accent/30 shadow-sm;
+  }
+  .dark .premium-card {
+    @apply bg-zinc-900 border-zinc-800 hover:border-accent/20 shadow-black/20;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

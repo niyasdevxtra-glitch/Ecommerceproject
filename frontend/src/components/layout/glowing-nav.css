@@ -1,0 +1,187 @@
+/* c:\Users\niyas\OneDrive\Desktop\devx\Ecommerceproject\frontend\src\components\layout\glowing-nav.css */
+.glowing-nav {
+	position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	height: 70px;
+	background: #ffffff;
+    z-index: 100;
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
+    transition: background 0.3s;
+    border-radius: 20px 20px 0 0;
+    overflow: visible;
+}
+
+.dark .glowing-nav {
+    background: #09090b; /* matches zinc-950 */
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+}
+
+.glowing-nav ul {
+	display: flex;
+	width: 100%;
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.glowing-nav ul li {
+	list-style: none;
+	position: relative;
+    flex: 1;
+	height: 70px;
+	z-index: 2;
+}
+
+.glowing-nav ul li a, .glowing-nav ul li button {
+	text-decoration: none;
+	background: transparent;
+	border: none;
+	color: #a1a1aa; 
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 0;
+}
+
+.glowing-nav ul li a .icon, .glowing-nav ul li button .icon {
+	position: relative;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+	font-size: 1.5em;
+	transition: 0.5s;
+    transition-delay: 0s;
+    z-index: 10;
+}
+
+/* Indicator logic */
+.glowing-nav-indicator {
+	position: absolute;
+	top: -35px;
+    left: calc(10vw - 35px); 
+	width: 70px;
+	height: 70px;
+	background: #ffffff;
+	border-radius: 50%;
+	z-index: 1;
+	transition: 0.5s;
+}
+
+.dark .glowing-nav-indicator {
+    background: #09090b;
+}
+
+/* Shadows for the cutout effect */
+.glowing-nav-indicator::before {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: -28px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	box-shadow: 15px 18px #ffffff;
+}
+.glowing-nav-indicator::after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	right: -28px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	box-shadow: -15px 18px #ffffff;
+}
+.dark .glowing-nav-indicator::before {
+    box-shadow: 15px 18px #09090b;
+}
+.dark .glowing-nav-indicator::after {
+    box-shadow: -15px 18px #09090b;
+}
+
+/* Active Icon Transformation */
+.glowing-nav ul li.active a .icon, 
+.glowing-nav ul li.active button .icon {
+	color: #fff;
+	transform: translateY(-37px);
+	transition-delay: 0.25s;
+}
+
+/* Base style for the icon background (invisible normally) */
+.glowing-nav ul li a .icon::before,
+.glowing-nav ul li button .icon::before {
+    content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 55px;
+	height: 55px;
+	background: var(--clr);
+	border-radius: 50%;
+	z-index: -1;
+    transition: 0.5s;
+    transition-delay: 0s;
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.glowing-nav ul li.active a .icon::before,
+.glowing-nav ul li.active button .icon::before {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.25s;
+}
+
+/* The glowing blur behind the icon */
+.glowing-nav ul li a .icon::after,
+.glowing-nav ul li button .icon::after {
+    content: '';
+	position: absolute;
+	top: 10px;
+	left: 0;
+	width: 55px;
+	height: 55px;
+	background: var(--clr);
+	border-radius: 50%;
+	filter: blur(8px);
+	opacity: 0;
+	transition: .5s;
+    z-index: -2;
+}
+
+.glowing-nav ul li.active a .icon::after,
+.glowing-nav ul li.active button .icon::after {
+	opacity: 0.6;
+	transition-delay: 0.25s;
+}
+
+/* Text reveal */
+.glowing-nav ul li a .text,
+.glowing-nav ul li button .text {
+    position: absolute;
+    bottom: 12px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.glowing-nav ul li.active a .text,
+.glowing-nav ul li.active button .text {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.25s;
+    color: var(--clr);
+}

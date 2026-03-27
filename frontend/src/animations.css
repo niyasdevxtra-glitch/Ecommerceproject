@@ -1,0 +1,99 @@
+/* 
+  Global Native CSS Scroll-driven Animations
+  For Chrome 115+
+  Falls back to standard CSS transitions driven by IntersectionObserver
+*/
+
+@keyframes text-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes image-appear {
+  0% {
+    filter: saturate(0) contrast(4) blur(3px);
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    filter: saturate(1) contrast(1) blur(0px);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Base states for fallback behavior (hidden by default until IO fires) */
+.css-scroll-text, .css-scroll-item, .css-scroll-image {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              transform 1s cubic-bezier(0.165, 0.84, 0.44, 1),
+              filter 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform, opacity, filter;
+}
+
+.css-scroll-image {
+  filter: saturate(0) contrast(4) blur(3px);
+  transform: scale(0.95);
+}
+
+/* Fallback visible state (triggered by JavaScript IntersectionObserver) */
+.css-scroll-text.is-visible, 
+.css-scroll-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.css-scroll-image.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: saturate(1) contrast(1) blur(0px);
+}
+
+/* Native CSS Scroll-driven Animation (Chrome 115+) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Overwrite base states to prevent JS fallback interference */
+    .css-scroll-text, .css-scroll-item {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      
+      animation-name: text-appear;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%; /* 0vh 70vh basically means it starts finishing around 30% of viewport */
+    }
+
+    .css-scroll-image {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      filter: none;
+
+      animation-name: image-appear;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .css-scroll-text, .css-scroll-item, .css-scroll-image {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
