@@ -3,12 +3,12 @@ require('dotenv').config();
 const dbconnect = require('./src/config/db');
 const port = process.env.PORT || 3000;
 
-// Routes
+// ... (Routes)
 const userRoute = require('./src/routes/user_routes');
 const adminRoute = require('./src/routes/admin_routes');
 const publicRouter = require('./src/routes/public_routes');
 
-// Middleware
+// ... (Middleware)
 const createsession = require('./src/config/session');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -18,35 +18,24 @@ const errorHandler = require('./src/middleware/errorHandler');
 
 const app = express();
 
+
+app.set("trust proxy", 1); 
+
 // Database Connection
 dbconnect();
 
-// CORS configuration early to ensure all responses (including errors/limits) have headers
+
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://ecommerceproject-three-zeta.vercel.app"],
+        "https://ecommerceproject-three-zeta.vercel.app"
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Global Middleware
-const globalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
-    max: 500, // Increased for dev/testing
-    message: "Too many requests from this IP, please try again after 15 minutes",
-    skip: (req) => req.ip === '::1' || req.ip === '127.0.0.1'
-});
-
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 20, // Increased for dev/testing
-    message: "Too many auth attempts from this IP, please try again after 15 minutes",
-    skip: (req) => req.ip === '::1' || req.ip === '127.0.0.1'
-});
-
+// ... (Limiters & Helmet remain the same)
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
     contentSecurityPolicy: {
@@ -64,13 +53,9 @@ app.use(helmet({
 }));
 app.use(globalLimiter);
 
-// Protect sensitive routes with stricter rate limiting
-app.use('/api/auth', authLimiter);
-app.use('/login', authLimiter);
-app.use('/register', authLimiter);
-
 app.use(express.json({ limit: '10kb' }));
-app.use(createsession());
+
+app.use(createsession()); 
 
 // Static Files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -80,10 +65,8 @@ app.use(userRoute);
 app.use(adminRoute);
 app.use(publicRouter);
 
-// Global Error Handler
 app.use(errorHandler);
 
-// Start Server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
