@@ -29,14 +29,17 @@ exports.register = async (req, res, next) => {
             role: user.role
         };
 
-        res.status(201).json({
-            success: true,
-            message: "Registered successfully!",
-            user: {
-                id: user._id,
-                username: user.username,
-                role: user.role
-            }
+        req.session.save((err) => {
+            if (err) return next(err);
+            return res.status(201).json({
+                success: true,
+                message: "Registered successfully!",
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    role: user.role
+                }
+            });
         });
     } catch (error) {
         next(error);
@@ -73,11 +76,14 @@ exports.login = async (req, res, next) => {
             role: user.role
         };
 
-        return res.status(200).json({
-            success: true,
-            message: 'Welcome',
-            username: user.username,
-            role: user.role
+        req.session.save((err) => {
+            if (err) return next(err);
+            return res.status(200).json({
+                success: true,
+                message: 'Welcome',
+                username: user.username,
+                role: user.role
+            });
         });
     } catch (error) {
         next(error);
