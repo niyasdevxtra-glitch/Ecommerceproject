@@ -16,6 +16,7 @@ function createsession(){
           secure: true,      
           sameSite: 'none', 
           httpOnly: true,
+          domain: 'ecommerceproject-oau8.onrender.com',
           maxAge: 24 * 60 * 60 * 1000 // 24 hours
       }
   })
