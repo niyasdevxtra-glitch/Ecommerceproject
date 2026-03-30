@@ -23,7 +23,10 @@ dbconnect();
 
 // CORS configuration early to ensure all responses (including errors/limits) have headers
 app.use(cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://ecommerceproject-three-zeta.vercel.app"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -50,8 +53,8 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'"],
             scriptSrc: ["'self'", "'unsafe-inline'"],
-            connectSrc: ["'self'", "http://localhost:3001"],
-            imgSrc: ["'self'", "data:", "blob:", "http://localhost:3001", "https://via.placeholder.com"],
+            connectSrc: ["'self'", "https://ecommerceproject-oau8.onrender.com"], 
+            imgSrc: ["'self'", "data:", "blob:", "https://ecommerceproject-oau8.onrender.com", "https://via.placeholder.com"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             fontSrc: ["'self'"],
             objectSrc: ["'none'"],
@@ -79,16 +82,6 @@ app.use(publicRouter);
 
 // Global Error Handler
 app.use(errorHandler);
-
-// Serve Frontend in Production
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, "../frontend/dist")));
-    app.get("*", (req, res) => {
-        if (!req.path.startsWith('/api')) {
-            res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
-        }
-    });
-}
 
 // Start Server
 app.listen(port, () => {
