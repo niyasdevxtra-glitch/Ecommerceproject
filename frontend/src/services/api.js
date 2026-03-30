@@ -11,7 +11,7 @@ const API = axios.create({
 API.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("token");
-        if (token) {
+        if (token && token !== "undefined") {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -36,5 +36,12 @@ API.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+export const getMediaUrl = (path) => {
+    if (!path) return "";
+    // Strip localhost:3001 if present and ensure no double slashes
+    const cleanPath = path.toString().replace("http://localhost:3001", "").replace(/^\/+/, "");
+    return `${API_BASE_URL}/${cleanPath}`;
+};
 
 export default API;
