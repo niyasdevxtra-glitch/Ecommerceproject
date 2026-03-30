@@ -65,7 +65,7 @@ export default function CheckoutPage() {
                 carrierService: hasExpress ? 'Express' : 'Standard'
             };
 
-            const res = await API.post("/order", orderData);
+            const res = await API.post("/order", orderData, { withCredentials: true });
             if (res.data.success) {
                 alert("Order Placed Successfully! 🚀");
                 // Clear cart after successful order

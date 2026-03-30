@@ -17,10 +17,9 @@ const path = require("path");
 const errorHandler = require('./src/middleware/errorHandler');
 
 const app = express();
+app.set("trust proxy", 1); 
 
 // --- 1. SETTINGS & DB ---
-// Required for Render/Vercel to handle cookies/sessions correctly
-app.set("trust proxy", 1); 
 dbconnect();
 
 // --- 2. CORS CONFIGURATION ---
