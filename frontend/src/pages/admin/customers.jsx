@@ -45,6 +45,22 @@ export default function AdminCustomers() {
     }
   };
 
+  const handleDeleteUser = async (id) => {
+    if (window.confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
+      try {
+        const res = await API.delete(`/admin/users/${id}`);
+        if (res.data.success) {
+          fetchUsers();
+        } else {
+          alert(res.data.message || "Failed to delete user");
+        }
+      } catch (err) {
+        console.error("Error deleting user:", err);
+        alert(err.response?.data?.message || "An error occurred during deletion");
+      }
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -141,7 +157,10 @@ export default function AdminCustomers() {
                           >
                             <Edit2 size={18} />
                           </button>
-                          <button className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                          <button 
+                            onClick={() => handleDeleteUser(user._id)}
+                            className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                          >
                             <Trash2 size={18} />
                           </button>
                         </div>

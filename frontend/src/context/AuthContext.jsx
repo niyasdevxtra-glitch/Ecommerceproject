@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (data) => {
     localStorage.setItem("token", data.token);
+    localStorage.setItem("userId", data.id); // Save the ID for header fallback
     localStorage.setItem("userRole", data.role);
     localStorage.setItem("userName", data.username);
     setToken(data.token);
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
     localStorage.removeItem("userName");
     setToken(null);

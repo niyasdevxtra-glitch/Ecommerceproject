@@ -10,7 +10,8 @@ const {createproduct,
     deletecategory,
     getallordersadmin,
     updateorderstatus,
-    adminUpdateUser} =require('../controllers/admincontroller')
+    adminUpdateUser,
+    deleteuser} =require('../controllers/admincontroller')
 
 const { createBanner, deleteBanner, updateBanner } = require('../controllers/bannercontroller')
 
@@ -24,6 +25,7 @@ router.delete('/admin/products/:id',isauthenticated,isadmin,deleteproduct)
 
 router.get('/admin/users',isauthenticated,isadmin,listallusers)
 router.put('/admin/users/:id',isauthenticated,isadmin,adminUpdateUser)
+router.delete('/admin/users/:id',isauthenticated,isadmin,deleteuser)
 
 router.post('/admin/category',isauthenticated,isadmin,upload.single('image'),createcategory)
 router.put('/admin/category/:id',isauthenticated,isadmin,upload.single('image'),updatecategory)

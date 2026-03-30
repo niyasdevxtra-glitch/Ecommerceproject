@@ -1,6 +1,6 @@
 
 const products = require('../models/product_model')
-const users = require('../models/user_model')
+const User = require('../models/user_model')
 const categorys = require('../models/category_model')
 const { disconnect } = require('mongoose')
 const orders = require('../models/order_model')
@@ -101,7 +101,7 @@ exports.deleteproduct = async (req,res) => {
 exports.listallusers = async (req,res) => {
     try{
 
-    const userlist = await users.find({},{password:0})
+    const userlist = await User.find({},{password:0})
 
     return res.json({message:'All users fetched successfully!',userlist})
 
@@ -275,7 +275,7 @@ exports.adminUpdateUser = async (req, res) => {
             updatedData.password = await bcrypt.hash(password, 10);
         }
 
-        const user = await users.findByIdAndUpdate(userId, updatedData, { new: true }).select('-password');
+        const user = await User.findByIdAndUpdate(userId, updatedData, { new: true }).select('-password');
 
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found!" });
@@ -288,6 +288,38 @@ exports.adminUpdateUser = async (req, res) => {
         });
     } catch (err) {
         console.error(err);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
+
+// delete user (admin)
+exports.deleteuser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        
+        // 1. Identification: Check current user from session or fallback header
+        const currentUserId = req.session?.user?.id || req.session?.user?._id || req.headers['x-user-id'];
+
+        // 2. Safeguard: Prevent deleting own account
+        if (userId === String(currentUserId)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Security Protocol: You cannot delete your own admin account!" 
+            });
+        }
+
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ success: false, message: "User not found!" });
+        }
+
+        return res.json({
+            success: true,
+            message: "User deleted successfully!"
+        });
+    } catch (err) {
+        console.error("Delete User Error:", err);
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };

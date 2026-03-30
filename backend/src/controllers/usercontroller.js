@@ -81,6 +81,7 @@ exports.login = async (req, res, next) => {
             return res.status(200).json({
                 success: true,
                 message: 'Welcome',
+                id: user._id,
                 username: user.username,
                 role: user.role
             });
