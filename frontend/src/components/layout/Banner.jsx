@@ -5,12 +5,16 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner) return null;
 
+    // Localized URL purification
+    const cleanBannerPath = banner.src?.replace("http://localhost:3001", "").replace(/^\/+/, "");
+    const finalBannerSrc = `${import.meta.env.VITE_API_BASE_URL}/${cleanBannerPath}`;
+
     const innerContent = (
         <>
             {/* Visual Media */}
             {banner.type === 'video' ? (
                 <video
-                    src={banner.src}
+                    src={finalBannerSrc}
                     autoPlay
                     loop
                     muted
@@ -19,7 +23,7 @@ export default function Banner({ banner, className = '', priority = false }) {
                 />
             ) : (
                 <img
-                    src={banner.src}
+                    src={finalBannerSrc}
                     alt={banner.title || 'Product Promo Banner'}
                     loading={priority ? "eager" : "lazy"}
                     fetchpriority={priority ? "high" : "auto"}
