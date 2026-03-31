@@ -5,28 +5,27 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // Directory-Aware Pathing
-    let rawPath = banner.src?.toString() || "";
-    let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
+    // 1. Default to the raw src (matches working Hero Slider behavior)
+    let finalBannerSrc = banner.src;
 
-    // Identify category for isolated fix
+    // 2. Isolated Fix for 'Newly Launched' specifically
     const categoryId = banner.category?.toLowerCase().replace(/[\s-_]/g, '') || "";
-
+    
     if (categoryId === 'newlaunch') {
-        // AGGRESSIVE FIX FOR NEW LAUNCH: Correct /banners/ to /uploads/
-        cleanPath = cleanPath.replace("banners/", "");
-        if (!cleanPath.toLowerCase().startsWith("uploads/")) {
-            cleanPath = `uploads/${cleanPath}`;
+        let path = banner.src.toString().replace("http://localhost:3001", "");
+        
+        // Correct 'banners/' to 'uploads/' as reported by user
+        if (path.includes("banners/")) {
+            path = path.replace("banners/", "uploads/");
+        } else if (!path.toLowerCase().includes("uploads/") && !path.startsWith("http")) {
+            // Force uploads prefix if it's a relative path missing it
+            path = `uploads/${path.replace(/^\/+/, "")}`;
         }
-    } else {
-        // STANDARD LOGIC: Only add 'uploads/' if it's not already at the start
-        if (!cleanPath.toLowerCase().startsWith("uploads/")) {
-            cleanPath = `uploads/${cleanPath}`;
-        }
-    }
 
-    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
-    const finalBannerSrc = `${baseUrl}/${cleanPath}`;
+        // Use the API base URL to ensure correct environment resolution
+        const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
+        finalBannerSrc = `${baseUrl}/${path.startsWith("/") ? "" : "/"}${path}`;
+    }
 
     const innerContent = (
         <>
