@@ -5,27 +5,24 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // 1. Default to the raw src (matches working Hero Slider behavior)
-    let finalBannerSrc = banner.src;
-
-    // 2. Isolated Fix for 'Newly Launched' specifically
+    // 1. Identify category for isolated logic
     const categoryId = banner.category?.toLowerCase().replace(/[\s-_]/g, '') || "";
-    
-    if (categoryId === 'newlaunch') {
-        let path = banner.src.toString().replace("http://localhost:3001", "");
-        
-        // Correct 'banners/' to 'uploads/' as reported by user
-        if (path.includes("banners/")) {
-            path = path.replace("banners/", "uploads/");
-        } else if (!path.toLowerCase().includes("uploads/") && !path.startsWith("http")) {
-            // Force uploads prefix if it's a relative path missing it
-            path = `uploads/${path.replace(/^\/+/, "")}`;
-        }
 
-        // Use the API base URL to ensure correct environment resolution
-        const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
-        finalBannerSrc = `${baseUrl}/${path.startsWith("/") ? "" : "/"}${path}`;
+    // 2. Localized URL purification & Path Construction
+    let path = banner.src.toString().replace("http://localhost:3001", "");
+    
+    // Handle the specific 'banners/' folder issue for Newly Launched
+    if (categoryId === 'newlaunch' && path.includes("banners/")) {
+        path = path.replace("banners/", "uploads/");
     }
+    
+    // Ensure 'uploads/' prefix for relative paths that are missing it
+    if (!path.toLowerCase().includes("uploads/") && !path.startsWith("http")) {
+        path = `uploads/${path.replace(/^\/+/, "")}`;
+    }
+
+    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
+    const finalBannerSrc = `${baseUrl}/${path.startsWith("/") ? "" : "/"}${path}`;
 
     const innerContent = (
         <>
