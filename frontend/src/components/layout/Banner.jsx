@@ -5,19 +5,17 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // 1. Raw Path Handling
-    const rawPath = banner.src.toString();
-    let cleanPath = "";
+    // Directory-Aware Filter
+    let rawPath = banner.src?.toString() || "";
+    let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
 
-    if (rawPath.includes("http://localhost:3001")) {
-        // Strip legacy localhost
-        cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
-    } else {
-        // Clean up relative paths (for Newly Launched)
-        cleanPath = rawPath.replace(/^\/+/, "");
+    // FORCE UPLOADS DIRECTORY: If the path doesn't start with 'uploads', add it.
+    if (!cleanPath.startsWith("uploads")) {
+        cleanPath = `uploads/${cleanPath}`;
     }
 
-    const finalBannerSrc = `${import.meta.env.VITE_API_BASE_URL}/${cleanPath}`;
+    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
+    const finalBannerSrc = `${baseUrl}/${cleanPath}`;
 
     const innerContent = (
         <>
