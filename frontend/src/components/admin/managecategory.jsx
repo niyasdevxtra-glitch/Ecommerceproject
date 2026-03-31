@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import API, { getMediaUrl } from '../../services/api';
+import API from '../../services/api';
 import AdminLayout from './AdminLayout';
 import { Plus, Trash2, Edit2, CheckCircle, AlertCircle, X, Image as ImageIcon, Layers } from 'lucide-react';
 
@@ -54,7 +54,7 @@ export default function ManageCategories() {
             name: cat.name || '',
             description: cat.discription || ''
         });
-        setPreview(cat.image ? getMediaUrl(cat.image) : null);
+        setPreview(cat.image ? (cat.image.startsWith('http') ? cat.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}${cat.image}`) : null);
         setFile(null);
         setIsModalOpen(true);
         setMessage('');
@@ -153,7 +153,7 @@ export default function ManageCategories() {
                             <div className="aspect-square w-full bg-gray-50 rounded-2xl overflow-hidden mb-4 relative flex items-center justify-center">
                                 {cat.image ? (
                                     <img 
-                                        src={getMediaUrl(cat.image)} 
+                                        src={cat.image.startsWith('http') ? cat.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}${cat.image}`} 
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         alt={cat.name}
                                     />

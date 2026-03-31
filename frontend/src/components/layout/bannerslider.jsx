@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API, { getMediaUrl } from "../../services/api";
+import API from "../../services/api";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
@@ -58,7 +58,7 @@ export default function BannerSlider() {
             {/* Background */}
             {banner.type === "video" ? (
               <video
-                src={getMediaUrl(banner.src)}
+                src={banner.src}
                 autoPlay
                 loop
                 muted
@@ -67,7 +67,7 @@ export default function BannerSlider() {
               />
             ) : (
               <img
-                src={getMediaUrl(banner.src)}
+                src={banner.src}
                 alt={banner.title || "Hero Banner"}
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchpriority={index === 0 ? "high" : "auto"}

@@ -45,13 +45,10 @@ API.interceptors.response.use(
 );
 
 export const getMediaUrl = (path) => {
-  if (!path) return "";
-  // 1. Remove the localhost prefix if it exists
-  let cleanPath = path.toString().replace("http://localhost:3001", "");
-  // 2. Remove leading slashes to prevent double slashes (e.g., //uploads)
-  cleanPath = cleanPath.replace(/^\/+/, "");
-  // 3. Prepend the API_BASE_URL
-  return `${API_BASE_URL}/${cleanPath}`;
+    if (!path) return "";
+    // Strip localhost:3001 if present and ensure no double slashes
+    const cleanPath = path.toString().replace("http://localhost:3001", "").replace(/^\/+/, "");
+    return `${API_BASE_URL}/${cleanPath}`;
 };
 
 export default API;
