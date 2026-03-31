@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../services/api";
+import API, { getMediaUrl } from "../../services/api";
 
 export default function CategoryRow() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function CategoryRow() {
             >
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-transparent group-hover:border-black transition-all duration-200">
                 <img
-                  src={cat.image?.startsWith('http') ? cat.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}${cat.image}`}
+                  src={getMediaUrl(cat.image)}
                   alt={cat.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                 />
