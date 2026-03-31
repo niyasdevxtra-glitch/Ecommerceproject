@@ -3,11 +3,21 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 
 export default function Banner({ banner, className = '', priority = false }) {
-    if (!banner) return null;
+    if (!banner || !banner.src) return null;
 
-    // Localized URL purification
-    const cleanBannerPath = banner.src?.replace("http://localhost:3001", "").replace(/^\/+/, "");
-    const finalBannerSrc = `${import.meta.env.VITE_API_BASE_URL}/${cleanBannerPath}`;
+    // 1. Raw Path Handling
+    const rawPath = banner.src.toString();
+    let cleanPath = "";
+
+    if (rawPath.includes("http://localhost:3001")) {
+        // Strip legacy localhost
+        cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
+    } else {
+        // Clean up relative paths (for Newly Launched)
+        cleanPath = rawPath.replace(/^\/+/, "");
+    }
+
+    const finalBannerSrc = `${import.meta.env.VITE_API_BASE_URL}/${cleanPath}`;
 
     const innerContent = (
         <>
