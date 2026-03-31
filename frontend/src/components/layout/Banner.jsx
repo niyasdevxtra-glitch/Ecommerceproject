@@ -5,24 +5,17 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // 1. Identify category for isolated logic
-    const categoryId = banner.category?.toLowerCase().replace(/[\s-_]/g, '') || "";
+    // Directory-Aware Pathing
+    let rawPath = banner.src?.toString() || "";
+    let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
 
-    // 2. Localized URL purification & Path Construction
-    let path = banner.src.toString().replace("http://localhost:3001", "");
-    
-    // Handle the specific 'banners/' folder issue for Newly Launched
-    if (categoryId === 'newlaunch' && path.includes("banners/")) {
-        path = path.replace("banners/", "uploads/");
-    }
-    
-    // Ensure 'uploads/' prefix for relative paths that are missing it
-    if (!path.toLowerCase().includes("uploads/") && !path.startsWith("http")) {
-        path = `uploads/${path.replace(/^\/+/, "")}`;
+    // Only add 'uploads/' if it's not already at the start of the string
+    if (!cleanPath.toLowerCase().startsWith("uploads/")) {
+        cleanPath = `uploads/${cleanPath}`;
     }
 
     const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
-    const finalBannerSrc = `${baseUrl}/${path.startsWith("/") ? "" : "/"}${path}`;
+    const finalBannerSrc = `${baseUrl}/${cleanPath}`;
 
     const innerContent = (
         <>
