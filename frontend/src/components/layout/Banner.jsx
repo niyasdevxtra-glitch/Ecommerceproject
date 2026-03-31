@@ -9,9 +9,20 @@ export default function Banner({ banner, className = '', priority = false }) {
     let rawPath = banner.src?.toString() || "";
     let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
 
-    // Only add 'uploads/' if it's not already at the start of the string
-    if (!cleanPath.toLowerCase().startsWith("uploads/")) {
-        cleanPath = `uploads/${cleanPath}`;
+    // Identify category for isolated fix
+    const categoryId = banner.category?.toLowerCase().replace(/[\s-_]/g, '') || "";
+
+    if (categoryId === 'newlaunch') {
+        // AGGRESSIVE FIX FOR NEW LAUNCH: Correct /banners/ to /uploads/
+        cleanPath = cleanPath.replace("banners/", "");
+        if (!cleanPath.toLowerCase().startsWith("uploads/")) {
+            cleanPath = `uploads/${cleanPath}`;
+        }
+    } else {
+        // STANDARD LOGIC: Only add 'uploads/' if it's not already at the start
+        if (!cleanPath.toLowerCase().startsWith("uploads/")) {
+            cleanPath = `uploads/${cleanPath}`;
+        }
     }
 
     const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
