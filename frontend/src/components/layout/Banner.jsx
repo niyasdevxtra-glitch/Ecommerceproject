@@ -5,12 +5,12 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // Directory-Aware Filter
+    // Directory-Aware Pathing
     let rawPath = banner.src?.toString() || "";
     let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
 
-    // FORCE UPLOADS DIRECTORY: If the path doesn't start with 'uploads', add it.
-    if (!cleanPath.startsWith("uploads")) {
+    // Only add 'uploads/' if it's not already at the start of the string
+    if (!cleanPath.toLowerCase().startsWith("uploads/")) {
         cleanPath = `uploads/${cleanPath}`;
     }
 

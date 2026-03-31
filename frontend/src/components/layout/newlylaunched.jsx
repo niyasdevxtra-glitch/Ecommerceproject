@@ -14,7 +14,11 @@ export default function Newlylaunched() {
             try {
                 const res = await API.get('/api/banners', { signal: controller.signal });
                 if (res.data.success) {
-                    setBanners(res.data.banners.filter(b => b.category === 'new_launch'));
+                    // Flexible filter: handles 'new_launch', 'New Launch', and 'newlaunch'
+                    const filtered = res.data.banners.filter(b => 
+                        b.category?.toLowerCase().replace(/[\s-_]/g, '') === 'newlaunch'
+                    );
+                    setBanners(filtered);
                 }
             } catch (error) {
                 if (error.name !== 'CanceledError') {
