@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
+import { getMediaUrl } from '../../services/api';
 
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner) return null;
@@ -10,7 +11,7 @@ export default function Banner({ banner, className = '', priority = false }) {
             {/* Visual Media */}
             {banner.type === 'video' ? (
                 <video
-                    src={banner.src}
+                    src={getMediaUrl(banner.src)}
                     autoPlay
                     loop
                     muted
@@ -19,7 +20,7 @@ export default function Banner({ banner, className = '', priority = false }) {
                 />
             ) : (
                 <img
-                    src={banner.src}
+                    src={getMediaUrl(banner.src)}
                     alt={banner.title || 'Product Promo Banner'}
                     loading={priority ? "eager" : "lazy"}
                     fetchpriority={priority ? "high" : "auto"}
