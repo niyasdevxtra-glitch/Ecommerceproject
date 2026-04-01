@@ -16,7 +16,7 @@ export default function Newlylaunched() {
                 if (res.data.success) {
                     // Flexible filter: handles 'new_launch', 'New Launch', and 'newlaunch'
                     const filtered = res.data.banners.filter(b => 
-                        b.category?.toLowerCase().replace(/[\s-_]/g, '') === 'newlaunch'
+                        (b.category || '').toLowerCase().replace(/[\s-_]/g, '') === 'newlaunch'
                     );
                     setBanners(filtered);
                 }
@@ -47,7 +47,7 @@ export default function Newlylaunched() {
                 modules={[Autoplay]}
                 spaceBetween={30}
                 slidesPerView={2} 
-                loop={true}
+                loop={banners.length > 2}
                 autoplay={{ delay: 5000, disableOnInteraction: false }}
                 breakpoints={{
                     0: { slidesPerView: 1, spaceBetween: 20 },    
