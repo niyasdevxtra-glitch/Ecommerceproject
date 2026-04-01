@@ -13,15 +13,18 @@ export default function Banner({ banner, className = '', priority = false }) {
     if (rawPath.startsWith("http") && !rawPath.includes("localhost:3001")) {
         finalBannerSrc = rawPath;
     } else {
-        // CASE 2 & 3: It's a Local File or Old Localhost - CLEAN & PREPEND
-        let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
+        // CASE 2 & 3: Local File or Old Localhost - CLEAN & PREPEND
+        // 1. Strip localhost and any existing 'banners/' or 'uploads/' folders to start fresh
+        let cleanPath = rawPath
+            .replace("http://localhost:3001", "")
+            .replace("uploads/", "")
+            .replace("banners/", "")
+            .replace(/^\/+/, "");
 
-        // Ensure the 'uploads/' folder is present for local files
-        if (!cleanPath.toLowerCase().startsWith("uploads/")) {
-            cleanPath = `uploads/${cleanPath}`;
-        }
+        // 2. Add the correct 'uploads/' prefix
+        cleanPath = `uploads/${cleanPath}`;
         
-        // Construct the production URL
+        // 3. Construct the production URL
         const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
         finalBannerSrc = `${baseUrl}/${cleanPath}`;
     }
