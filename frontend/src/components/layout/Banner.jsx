@@ -5,17 +5,27 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // Directory-Aware Pathing
-    let rawPath = banner.src?.toString() || "";
-    let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
+    // --- UNIVERSAL URL GATEKEEPER START ---
+    const rawPath = banner.src?.toString() || "";
+    let finalBannerSrc = "";
+    
+    // CASE 1: It's an External URL (Unsplash/Cloudinary) - LEAVE IT ALONE
+    if (rawPath.startsWith("http") && !rawPath.includes("localhost:3001")) {
+        finalBannerSrc = rawPath;
+    } else {
+        // CASE 2 & 3: It's a Local File or Old Localhost - CLEAN & PREPEND
+        let cleanPath = rawPath.replace("http://localhost:3001", "").replace(/^\/+/, "");
 
-    // Only add 'uploads/' if it's not already at the start of the string
-    if (!cleanPath.toLowerCase().startsWith("uploads/")) {
-        cleanPath = `uploads/${cleanPath}`;
+        // Ensure the 'uploads/' folder is present for local files
+        if (!cleanPath.toLowerCase().startsWith("uploads/")) {
+            cleanPath = `uploads/${cleanPath}`;
+        }
+        
+        // Construct the production URL
+        const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
+        finalBannerSrc = `${baseUrl}/${cleanPath}`;
     }
-
-    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
-    const finalBannerSrc = `${baseUrl}/${cleanPath}`;
+    // --- UNIVERSAL URL GATEKEEPER END ---
 
     const innerContent = (
         <>
