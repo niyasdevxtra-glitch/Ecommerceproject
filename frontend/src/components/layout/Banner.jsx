@@ -37,6 +37,8 @@ export default function Banner({ banner, className = '', priority = false }) {
             {banner.type === 'video' ? (
                 <video
                     src={finalBannerSrc}
+                    width="1600"
+                    height="900"
                     autoPlay
                     loop
                     muted
@@ -47,6 +49,8 @@ export default function Banner({ banner, className = '', priority = false }) {
                 <img
                     src={finalBannerSrc}
                     alt={banner.title || 'Product Promo Banner'}
+                    width="1600"
+                    height="900"
                     loading={priority ? "eager" : "lazy"}
                     fetchpriority={priority ? "high" : "auto"}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
