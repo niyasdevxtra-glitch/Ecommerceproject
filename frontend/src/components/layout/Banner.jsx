@@ -5,30 +5,31 @@ import { ArrowUpRight } from 'lucide-react';
 export default function Banner({ banner, className = '', priority = false }) {
     if (!banner || !banner.src) return null;
 
-    // --- UNIVERSAL URL GATEKEEPER START ---
+    // --- THE SMART TOGGLE: PROTECTS ALL WORKING BANNERS ---
     const rawPath = banner.src?.toString() || "";
     let finalBannerSrc = "";
-    
-    // CASE 1: It's an External URL (Unsplash/Cloudinary) - LEAVE IT ALONE
+
+    // 1. IF IT IS A FULL CLOUD LINK (Unsplash, Cloudinary, etc.)
     if (rawPath.startsWith("http") && !rawPath.includes("localhost:3001")) {
+        // DO NOT touch it. Do not add 'uploads/'. Do not add 'baseUrl'.
         finalBannerSrc = rawPath;
-    } else {
-        // CASE 2 & 3: Local File or Old Localhost - CLEAN & PREPEND
-        // 1. Strip localhost and any existing 'banners/' or 'uploads/' folders to start fresh
+    } 
+    // 2. IF IT IS A LOCAL/LEGACY LINK (Categories, Hero, Products)
+    else {
+        // Clean the path (remove localhost, extra folders)
         let cleanPath = rawPath
             .replace("http://localhost:3001", "")
             .replace("uploads/", "")
             .replace("banners/", "")
             .replace(/^\/+/, "");
 
-        // 2. Add the correct 'uploads/' prefix
+        // Ensure it points to your Render backend uploads folder
         cleanPath = `uploads/${cleanPath}`;
-        
-        // 3. Construct the production URL
+
         const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") || "http://localhost:3001";
         finalBannerSrc = `${baseUrl}/${cleanPath}`;
     }
-    // --- UNIVERSAL URL GATEKEEPER END ---
+    // --- END SMART TOGGLE ---
 
     const innerContent = (
         <>
