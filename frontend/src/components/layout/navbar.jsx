@@ -84,7 +84,7 @@ export default function NavbarMenu() {
         </span>
       </div>
 
-      <nav className={`sticky top-0 w-full z-50 transition-all duration-300 ${scrolled ? "glass border-b border-gray-100 dark:border-zinc-800" : "bg-white dark:bg-zinc-950 border-b border-gray-100 dark:border-zinc-900"}`}>
+      <nav className="sticky top-0 w-full z-50 transition-all duration-300 bg-[#ffffff] dark:bg-[#09090b] border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex items-center justify-between h-16 md:h-20 relative">
             

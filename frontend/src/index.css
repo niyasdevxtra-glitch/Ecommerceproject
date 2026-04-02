@@ -18,6 +18,11 @@ html {
   overflow-x: hidden;
 }
 
+:root {
+  color-scheme: only light;
+  background-color: #ffffff; /* Hardcode the light default */
+}
+
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900 font-sans antialiased;
@@ -67,7 +72,8 @@ html {
   --color-primary: #ffffff;
   --color-surface: rgba(18, 18, 20, 0.9);
   --color-accent: #facc15;
-  color-scheme: dark;
+  color-scheme: only dark;
+  background-color: #09090b; /* Hardcode the dark default */
 }
 
 @layer components {
