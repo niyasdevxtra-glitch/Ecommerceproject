@@ -9,8 +9,14 @@ export default function Banner({ banner, className = '', priority = false }) {
     const rawPath = banner.src?.toString() || "";
     let finalBannerSrc = "";
 
+    const isStaticBanner = rawPath.startsWith('nb');
+
+    // 0. IF IT IS A STATIC FRONTEND BANNER (nb1.jpg, etc.)
+    if (isStaticBanner) {
+        finalBannerSrc = `/banners/${rawPath}`;
+    }
     // 1. IF IT IS A FULL CLOUD LINK (Unsplash, Cloudinary, etc.)
-    if (rawPath.startsWith("http") && !rawPath.includes("localhost:3001")) {
+    else if (rawPath.startsWith("http") && !rawPath.includes("localhost:3001")) {
         // DO NOT touch it. Do not add 'uploads/'. Do not add 'baseUrl'.
         finalBannerSrc = rawPath;
     } 
