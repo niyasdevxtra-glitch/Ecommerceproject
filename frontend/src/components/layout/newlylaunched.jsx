@@ -15,7 +15,7 @@ export default function Newlylaunched() {
                 const res = await API.get('/api/banners', { signal: controller.signal });
                 if (res.data.success) {
                     // Flexible filter: handles 'new_launch', 'New Launch', and 'newlaunch'
-                    const filtered = res.data.banners.filter(b => 
+                    const filtered = res.data.banners.filter(b =>
                         (b.category || '').toLowerCase().replace(/[\s-_]/g, '') === 'newlaunch'
                     );
                     setBanners(filtered);
@@ -46,12 +46,12 @@ export default function Newlylaunched() {
             <Swiper
                 modules={[Autoplay]}
                 spaceBetween={30}
-                slidesPerView={2} 
+                slidesPerView={2}
                 loop={banners.length > 2}
                 autoplay={{ delay: 5000, disableOnInteraction: false }}
                 breakpoints={{
-                    0: { slidesPerView: 1, spaceBetween: 20 },    
-                    768: { slidesPerView: 2, spaceBetween: 30 },  
+                    0: { slidesPerView: 1, spaceBetween: 20 },
+                    768: { slidesPerView: 2, spaceBetween: 30 },
                 }}
                 className="pb-12 !px-4"
             >
