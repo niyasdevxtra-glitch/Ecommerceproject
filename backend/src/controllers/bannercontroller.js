@@ -16,7 +16,7 @@ exports.createBanner = async (req, res, next) => {
         let src = req.body.src; // Fallback to provided URL string
 
         if (req.file) {
-            src = `/uploads/${req.file.filename}`;
+            src = req.file.path;
         }
 
         if (!type || !category) {
@@ -39,7 +39,7 @@ exports.updateBanner = async (req, res, next) => {
         const updateData = { ...req.body };
 
         if (req.file) {
-            updateData.src = `/uploads/${req.file.filename}`;
+            updateData.src = req.file.path;
         }
 
         const banner = await Banner.findByIdAndUpdate(bannerId, updateData, { new: true });

@@ -3,3 +3,6 @@ node_modules/
 dist/
 build/
 .DS_Store
+
+# Exclude legacy local upload testing directory
+backend/uploads/

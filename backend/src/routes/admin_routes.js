@@ -17,7 +17,7 @@ const { createBanner, deleteBanner, updateBanner } = require('../controllers/ban
 
 const {isauthenticated} = require('../middleware/isauthenticated')
 const {isadmin} = require('../middleware/isadmin')
-const upload  = require("../middleware/multer")
+const upload  = require("../middleware/cloudinaryConfig")
 
 router.post('/admin/products',isauthenticated,isadmin,upload.single('image'),createproduct)
 router.put('/admin/products/:id',isauthenticated,isadmin,upload.single('image'),updateproduct)

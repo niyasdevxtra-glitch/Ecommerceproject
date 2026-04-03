@@ -77,7 +77,7 @@ app.use('/login', authLimiter);
 app.use('/register', authLimiter);
 
 // --- 6. ROUTES & STATIC FILES ---
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Removed during Cloudinary migration
 
 app.use(userRoute);
 app.use(adminRoute);

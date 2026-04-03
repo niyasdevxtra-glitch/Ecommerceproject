@@ -11,7 +11,7 @@ exports.createproduct = async (req,res) => {
     try {
 
         const {name, description, price, category, stock} = req.body
-        const image = req.file ? req.file.filename : null
+        const image = req.file ? req.file.path : null
 
         if(!name || !price || isNaN(price) || price <= 0){
             return res.status(400).json({ message:'Valid Name and positive Price are required !'})
@@ -61,7 +61,7 @@ exports.updateproduct = async (req,res) => {
         if (stock) product.stock = stock
 
         if(req.file){
-            product.image = req.file.filename
+            product.image = req.file.path
         }
 
         await product.save()
@@ -122,7 +122,7 @@ exports.createcategory = async (req,res) => {
 
         let image = null;
         if(req.file){
-            image = `http://localhost:3001/uploads/${req.file.filename}`;
+            image = req.file.path;
         }
 
         if(!name){
@@ -151,7 +151,7 @@ exports.updatecategory = async(req,res) => {
 try {
     const updateData = { ...req.body };
     if(req.file){
-        updateData.image = `http://localhost:3001/uploads/${req.file.filename}`;
+        updateData.image = req.file.path;
     }
 
     const updatedata = await categorys.findByIdAndUpdate(
