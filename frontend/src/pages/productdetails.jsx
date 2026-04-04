@@ -99,7 +99,7 @@ export default function ProductDetails() {
           <div className="lg:sticky lg:top-32 space-y-6">
             <div className="aspect-square rounded-[3rem] overflow-hidden border border-gray-100 bg-gray-50 group hover:shadow-2xl hover:shadow-black/5 transition-all duration-700">
                 <img
-                    src={product.image ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}` : "https://via.placeholder.com/800"}
+                    src={product.image ? (product.image.includes('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}`) : "https://via.placeholder.com/800"}
                     alt={product.name}
                     loading="eager"
                     fetchpriority="high"
@@ -109,7 +109,7 @@ export default function ProductDetails() {
             <div className="grid grid-cols-4 gap-4">
                 {[1,2,3,4].map(i => (
                     <div key={i} className="aspect-square rounded-2xl bg-gray-50 border border-transparent hover:border-black transition-all cursor-pointer overflow-hidden opacity-40 hover:opacity-100">
-                        <img src={product.image ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}` : "https://via.placeholder.com/200"} className="w-full h-full object-cover" />
+                        <img src={product.image ? (product.image.includes('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}`) : "https://via.placeholder.com/200"} className="w-full h-full object-cover" />
                     </div>
                 ))}
             </div>

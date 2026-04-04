@@ -25,7 +25,7 @@ export default function CartPage() {
                 <div key={item.productId._id} className="bg-white p-6 rounded-[2.5rem] border border-gray-100 flex flex-col md:flex-row items-center gap-8 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all">
                   <div className="w-32 h-32 bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 flex-shrink-0">
                     <img 
-                      src={item.productId.image ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${item.productId.image}` : "https://via.placeholder.com/200"} 
+                      src={item.productId.image ? (item.productId.image.includes('http') ? item.productId.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${item.productId.image}`) : "https://via.placeholder.com/200"} 
                       alt={item.productId.name} 
                       className="w-full h-full object-cover"
                     />
