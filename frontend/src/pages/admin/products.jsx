@@ -111,7 +111,7 @@ export default function AdminProducts() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <img 
-                            src={product.image ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}${product.image}` : 'https://via.placeholder.com/40'} 
+                            src={product?.image ? (product.image.includes('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}${product.image}`) : 'https://via.placeholder.com/40'} 
                             alt="" 
                             className="w-12 h-12 rounded-xl object-cover bg-gray-50"
                           />
