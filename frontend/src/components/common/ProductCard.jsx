@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
       {/* Image Gallery Mockup */}
       <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-4">
         <img
-          src={product.image ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}` : "https://via.placeholder.com/400"}
+          src={product.image ? (product.image.includes('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}`) : "https://via.placeholder.com/400"}
           alt={product.name}
           loading="lazy"
           className="css-scroll-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
