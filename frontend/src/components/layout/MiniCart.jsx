@@ -47,8 +47,8 @@ export default function MiniCart() {
                                 <div key={product._id || idx} className="flex gap-4 group">
                                     <div className="w-24 h-24 bg-gray-50 rounded-[1.5rem] overflow-hidden flex-shrink-0 border border-gray-100 transition-transform group-hover:scale-105">
                                         <img 
-                                            src={product.image ? `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}` : "https://via.placeholder.com/150"} 
-                                            alt={product.name || "Product"} 
+                                            src={product?.image ? (product.image.includes('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${product.image}`) : "https://via.placeholder.com/150"} 
+                                            alt={product?.name || "Product"} 
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
