@@ -7,9 +7,9 @@ require('dotenv').config();
 const requiredEnvs = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
 requiredEnvs.forEach(key => {
   if (!process.env[key]) {
-      console.error(`🚨 FATAL: Missing Environment Variable: ${key}`);
-      // Throwing error stops server start if the keys form Render are completely missing
-      // throw new Error(`Missing Cloudinary Configuration: ${key}`);
+    console.error(`🚨 FATAL: Missing Environment Variable: ${key}`);
+    // Throwing error stops server start if the keys form Render are completely missing
+    // throw new Error(`Missing Cloudinary Configuration: ${key}`);
   }
 });
 
@@ -31,7 +31,8 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'ecommerce_uploads',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'mp4'],
+    resource_type: 'auto'
   }
 });
 
