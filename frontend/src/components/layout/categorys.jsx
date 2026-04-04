@@ -28,7 +28,7 @@ export default function CategoryRow() {
             >
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-transparent group-hover:border-black transition-all duration-200">
                 <img
-                  src={getMediaUrl(cat.image)}
+                  src={cat.image ? (cat.image.includes('http') ? cat.image : getMediaUrl(cat.image)) : "https://via.placeholder.com/150"}
                   alt={cat.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                 />
