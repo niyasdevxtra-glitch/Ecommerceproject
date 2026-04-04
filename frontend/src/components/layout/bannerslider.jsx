@@ -48,6 +48,14 @@ export default function BannerSlider() {
       {banners.map((banner, index) => {
         const isActive = index === current;
         
+        // Smart URL unified helper
+        const getBannerMedia = (src) => {
+            if (!src) return "";
+            if (src.includes('http') && !src.includes('localhost:3001')) return src;
+            return `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${src.replace("uploads/", "")}`;
+        };
+        const mediaSrc = getBannerMedia(banner.src);
+
         return (
           <div 
             key={banner._id} 
@@ -58,7 +66,7 @@ export default function BannerSlider() {
             {/* Background */}
             {banner.type === "video" ? (
               <video
-                src={banner.src}
+                src={mediaSrc}
                 autoPlay
                 loop
                 muted
@@ -67,7 +75,7 @@ export default function BannerSlider() {
               />
             ) : (
               <img
-                src={banner.src}
+                src={mediaSrc}
                 alt={banner.title || "Hero Banner"}
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchpriority={index === 0 ? "high" : "auto"}
