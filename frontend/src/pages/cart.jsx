@@ -21,28 +21,28 @@ export default function CartPage() {
           <div className="flex flex-col lg:flex-row gap-12">
             {/* Items List */}
             <div className="flex-1 space-y-6">
-              {cartItems.map((item) => (
-                <div key={item.productId._id} className="bg-white p-6 rounded-[2.5rem] border border-gray-100 flex flex-col md:flex-row items-center gap-8 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all">
+              {cartItems.map((item, index) => (
+                <div key={item?.productId?._id || index} className="bg-white p-6 rounded-[2.5rem] border border-gray-100 flex flex-col md:flex-row items-center gap-8 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all">
                   <div className="w-32 h-32 bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 flex-shrink-0">
                     <img 
-                      src={item.productId.image ? (item.productId.image.includes('http') ? item.productId.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${item.productId.image}`) : "https://via.placeholder.com/200"} 
-                      alt={item.productId.name} 
+                      src={item?.productId?.image ? (item.productId.image.includes('http') ? item.productId.image : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3001"}/uploads/${item.productId.image}`) : "https://via.placeholder.com/200"} 
+                      alt={item?.productId?.name || "Unavailable Product"} 
                       className="w-full h-full object-cover"
                     />
                   </div>
                   
                   <div className="flex-1 text-center md:text-left">
-                    <h3 className="text-xl font-bold mb-1">{item.productId.name}</h3>
-                    <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-4">{item.productId.category || "General Hardware"}</p>
+                    <h3 className="text-xl font-bold mb-1">{item?.productId?.name || "Product Unavailable"}</h3>
+                    <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-4">{item?.productId?.category || "General Hardware"}</p>
                     
                     <div className="flex items-center justify-center md:justify-start gap-6">
                         <div className="flex items-center gap-4 bg-gray-50 rounded-2xl px-4 py-2 border border-gray-200">
-                            <button onClick={() => updateQuantity(item.productId._id, item.quantity - 1)} className="p-1 hover:text-accent transition-colors"><Minus size={18} /></button>
+                            <button onClick={() => item?.productId && updateQuantity(item.productId._id, item.quantity - 1)} className="p-1 hover:text-accent transition-colors"><Minus size={18} /></button>
                             <span className="text-lg font-black w-6 text-center">{item.quantity}</span>
-                            <button onClick={() => updateQuantity(item.productId._id, item.quantity + 1)} className="p-1 hover:text-accent transition-colors"><Plus size={18} /></button>
+                            <button onClick={() => item?.productId && updateQuantity(item.productId._id, item.quantity + 1)} className="p-1 hover:text-accent transition-colors"><Plus size={18} /></button>
                         </div>
                         <button 
-                            onClick={() => removeFromCart(item.productId._id)}
+                            onClick={() => item?.productId && removeFromCart(item.productId._id)}
                             className="p-3 text-red-400 hover:bg-red-50 rounded-2xl transition-all"
                         >
                             <Trash2 size={20} />
@@ -51,8 +51,8 @@ export default function CartPage() {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-2xl font-black">₹{(item.productId.price * item.quantity).toLocaleString()}</p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">₹{item.productId.price.toLocaleString()} / unit</p>
+                    <p className="text-2xl font-black">₹{((item?.productId?.price || 0) * item.quantity).toLocaleString()}</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">₹{(item?.productId?.price || 0).toLocaleString()} / unit</p>
                   </div>
                 </div>
               ))}
