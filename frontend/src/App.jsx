@@ -33,9 +33,12 @@ const PageLoader = () => (
   </div>
 );
 
+import LoaderOverlay from "./components/layout/LoaderOverlay";
+
 const App = () => {
   return (
     <BrowserRouter>
+      <LoaderOverlay />
       <CSSScrollGlobal />
       <Suspense fallback={<PageLoader />}>
         <Routes>
