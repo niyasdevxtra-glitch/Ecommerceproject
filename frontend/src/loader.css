@@ -1,94 +1,97 @@
-/* Loader Overlay Container */
+/* loader.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+
 .global-loader-overlay {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #ffffff; /* Use #000000 if your app defaults to dark mode */
-  z-index: 999999; /* Ensure it stays above EVERYTHING */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.8s ease-in-out, transform 0.8s cubic-bezier(0.8, 0, 0.2, 1);
+    margin: 0;
+    background: #151515;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    transition: opacity 0.8s ease-in-out, transform 0.8s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
 .global-loader-overlay.fade-out {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(1.05); /* Slight zoom out while fading */
-}
-
-/* Pixel Grid Build Animation */
-.pixel-grid-container {
-  display: flex;
-  gap: 4px;
-  font-family: inherit; /* Use existing font, can swap to 'Courier New' for raw pixel look */
-  font-size: 2.5rem;
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-  .pixel-grid-container {
-    font-size: 4rem;
-    gap: 8px;
-  }
-}
-
-.pixel-letter {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(20px) scale(0.5);
-  animation: buildPixel 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  color: #000;
-}
-
-@keyframes buildPixel {
-  0% {
     opacity: 0;
-    transform: translateY(20px) scale(0.5);
-    filter: blur(8px);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-5px) scale(1.1);
-    filter: blur(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
+    pointer-events: none;
+    transform: scale(1.05);
 }
 
-/* Status Indicator below the text */
-.loader-status {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  opacity: 0;
-  animation: fadeIn 1s ease-in forwards;
-  animation-delay: 1.5s;
+.loader-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #0fc70f;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #0fc70f;
+.text-wrapper {
+    position: relative;
+    font-size: 10vw;
+    font-weight: 1000;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    color: #424242;
+    white-space: nowrap;
+    text-align: center;
+    margin: 0;
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; }
+.text-wrapper::before {
+    content: "PIXEL MOBAILS";
+    position: absolute;
+    inset: 0;
+    color: #fff;
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="200"><path d="M0,100 C200,165 400,35 600,100 C800,165 1000,35 1200,100 C1400,165 1600,35 1600,100 V200 H0 Z" fill="black"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="200"><path d="M0,100 C200,165 400,35 600,100 C800,165 1000,35 1200,100 C1400,165 1600,35 1600,100 V200 H0 Z" fill="black"/></svg>');
+    -webkit-mask-size: 1000px 200%;
+    mask-size: 1000px 200%;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    -webkit-mask-position: 0 var(--mask-y, 0%);
+    mask-position: 0 var(--mask-y, 0%);
+    animation: sloshMove 1.2s linear infinite;
 }
 
-/* Dark Mode Fallback support if theme changes early */
-.dark .global-loader-overlay {
-  background-color: #09090b;
+@keyframes sloshMove {
+    from { -webkit-mask-position-x: 0; }
+    to { -webkit-mask-position-x: 1000px; }
 }
-.dark .pixel-letter {
-  color: #fff;
+
+.complete .text-wrapper {
+    color: #fff;
+    transition: color 0.2s;
+}
+
+.complete .text-wrapper::before {
+    display: none;
+}
+
+.counter {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    opacity: 0.7;
+    text-align: center;
+}
+
+/* FLUID SPLASH CURSOR */
+.fluid-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
 }
